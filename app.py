@@ -7,7 +7,7 @@ def format_vnd(amount):
     """Hàm định dạng số tiền sang chuẩn VNĐ (VD: 1.000.000 VNĐ)"""
     return f"{amount:,.0f}".replace(",", ".") + " VNĐ"
 
-st.title("💰 Ứng Dụng Tính Lãi Gửi Tiết Kiệm")
+st.title("Ngân hàng quỷ santan")
 st.markdown("Nhập thông tin khoản gửi của bạn để tính toán chi tiết tiền lãi nhận được.")
 
 # --- KHU VỰC NHẬP LIỆU ---
