@@ -1,7 +1,7 @@
 import streamlit as st
 
 # Cấu hình trang
-st.set_page_config(page_title="Tính Lãi Tiết Kiệm", page_icon="💰", layout="centered")
+st.set_page_config(page_title="Ngân hàng lãi tiết kiệm địa phủ", page_icon="💰", layout="centered")
 
 def format_vnd(amount):
     """Hàm định dạng số tiền sang chuẩn VNĐ (VD: 1.000.000 VNĐ)"""
