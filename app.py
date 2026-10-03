@@ -214,7 +214,7 @@ if submitted:
             st.info(f"📜 Kết quả xăm: {random.choice(fortunes)}")
 
     with tab2:
-        st.markdown("#### Gói Bảo Hiểm 'Không Mất Gốc Khi Qua Cầu'"):
+       
         ins_package = st.selectbox("Chọn cấp độ bảo hiểm:", [
             "Gói Thường (Bảo hiểm 50% tài sản khi gặp Diêm Vương xét duyệt sớm)",
             "Gói VIP (Bảo hiểm 100% gốc + tặng kèm 1 căn nhà giấy cao cấp âm phủ)",
