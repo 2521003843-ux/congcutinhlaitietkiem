@@ -19,7 +19,7 @@ st.markdown("""
     }
     .stSidebar {
         background-color: #12121a;
-        border-right: 1px solid #331111;
+        border-right: 1px solid #ffcc00;
     }
     h1, h2, h3 {
         color: #ff3333 !important;
