@@ -1,5 +1,5 @@
 import streamlit as st
-
+st.image("logo.jpg")
 # Cấu hình trang
 st.set_page_config(page_title="Ngân hàng lãi tiết kiệm địa phủ", page_icon="💰", layout="centered")
 
