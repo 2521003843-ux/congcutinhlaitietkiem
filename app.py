@@ -4,7 +4,7 @@ import numpy as np
 st.image("logo.jpg")
 # Cấu hình trang Streamlit
 st.set_page_config(
-    page_title="Ngân hàng Địa Phủ - Gửi Lãi Âm Phủ",
+    page_title="Ngân hàng Anh Pha",
     page_icon="🔥",
     layout="wide",
     initial_sidebar_state="expanded"
