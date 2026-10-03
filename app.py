@@ -1,24 +1,22 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-st.image("logo.jpg")
+
 # Cấu hình trang Streamlit
 st.set_page_config(
-    page_title="Ngân hàng Anh Pha",
+    page_title="Ngân hàng Địa Phủ - Gửi Lãi Âm Phủ",
     page_icon="🔥",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# CSS tùy chỉnh giao diện: Tối ưu độ tương phản chữ rõ nét, dễ đọc trên nền tối Địa Phủ
+# CSS tùy chỉnh giao diện tối ưu độ tương phản rõ nét chủ đề Địa Phủ
 st.markdown("""
     <style>
-    /* Màu nền chung cho trang */
     .main {
         background-color: #0b0b0f;
         color: #f0f0f5;
     }
-    /* Sidebar */
     .stSidebar {
         background-color: #14141f;
         border-right: 1px solid #4a1515;
@@ -27,13 +25,11 @@ st.markdown("""
         color: #ffcccc !important;
         font-weight: 600;
     }
-    /* Tiêu đề chính to rõ */
     h1, h2, h3 {
         color: #ff4d4d !important;
         font-family: 'Cinzel', serif, sans-serif;
         text-shadow: 0px 0px 12px rgba(255, 77, 77, 0.6);
     }
-    /* Card kết quả nổi bật, chữ sáng rõ */
     .metric-card {
         background: linear-gradient(135deg, #1f0f0f 0%, #2e1414 100%);
         border: 1px solid #ff5c5c;
@@ -55,7 +51,6 @@ st.markdown("""
         margin-top: 8px;
         font-weight: 500;
     }
-    /* Nút bấm */
     .stButton>button {
         background: linear-gradient(90deg, #d90429 0%, #ef233c 100%);
         color: #ffffff;
@@ -66,11 +61,10 @@ st.markdown("""
         box-shadow: 0 0 12px rgba(239, 35, 60, 0.6);
     }
     .stButton>button:hover {
-        background: linear-gradient(90deg, #ef233c 0%, #ff4d4d 100%);
+        background: linear-gradient(90deg, #ef233c 100%, #ff4d4d 100%);
         border-color: #ffffff;
         color: #ffffff;
     }
-    /* Chữ hiển thị thông tin chung */
     p, span, div, label {
         color: #e2e2ec;
     }
@@ -83,8 +77,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Tiêu đề ứng dụng
-st.title("🔥 Ngân Hàng Anh Pha 🔥")
+st.title("🔥 NGÂN HÀNG ĐỊA PHỦ - HỆ THỐNG GỬI TIẾT KIỆM ÂM PHỦ 🔥")
 st.markdown("*(Cam kết sinh lời cực đại, rút gốc ở trần gian, nhận lãi ở... âm phủ!)*")
+
+# Dữ liệu mẫu lãi suất các ngân hàng thực tế theo kỳ hạn (Tháng: 1, 3, 6, 12, 24, 36)
+# Dựa trên biểu lãi suất cập nhật mới nhất
+BANK_RATES = {
+    "🎯 Tự nhập lãi suất theo ý muốn": {1: 6.0, 3: 6.5, 6: 7.0, 12: 8.5, 24: 9.0, 36: 9.5},
+    "👻 Ngân Hàng Địa Phủ (Đặc quyền Âm Ti)": {1: 8.0, 3: 9.0, 6: 10.5, 12: 12.0, 24: 15.0, 36: 18.0},
+    "🏛️ Ngân hàng Nhà nước (Agribank / BIDV / Vietcombank)": {1: 2.1, 3: 2.4, 6: 3.5, 12: 5.2, 24: 5.3, 36: 5.3},
+    "💳 Ngân hàng Tư nhân / Ngân hàng Số (MB / Techcombank / VPBank)": {1: 4.1, 3: 4.5, 6: 6.0, 12: 6.5, 24: 6.8, 36: 7.0},
+    "🔥 Ngân hàng Lãi suất cao (BacABank / Cake / OCB)": {1: 4.7, 3: 4.8, 6: 6.5, 12: 7.2, 24: 7.4, 36: 7.5}
+}
 
 # Sidebar nhập liệu thông tin
 st.sidebar.header("📜 HỒ SƠ GỬI TIỀN VÀNG MÃ")
@@ -99,8 +103,22 @@ with st.sidebar.form("saving_form"):
         principal = st.number_input("Số tờ Vàng Mã / Đô La Âm Phủ:", min_value=1_000, max_value=10_000_000_000, value=50_000, step=1000, format="%d")
         unit_str = "Tờ/Đồng"
 
-    term_months = st.slider("Kỳ hạn gửi (Tháng):", min_value=1, max_value=120, value=12)
-    annual_rate = st.number_input("Lãi suất năm (%/năm):", min_value=0.1, max_value=99.9, value=8.5, step=0.1)
+    # Kỳ hạn gửi
+    term_months = st.slider("Kỳ hạn gửi (Tháng):", min_value=1, max_value=60, value=12)
+
+    # Lựa chọn tích hợp ngân hàng
+    selected_bank = st.selectbox("🌐 Tích hợp biểu lãi suất ngân hàng:", list(BANK_RATES.keys()))
+
+    # Tự động gán hoặc cho phép nhập lãi suất
+    if "Tự nhập" in selected_bank:
+        annual_rate = st.number_input("Lãi suất năm tự chọn (%/năm):", min_value=0.1, max_value=99.9, value=8.5, step=0.1)
+    else:
+        # Tìm mức lãi suất gần nhất với kỳ hạn người dùng chọn từ ngân hàng tương ứng
+        available_terms = list(BANK_RATES[selected_bank].keys())
+        closest_term = min(available_terms, key=lambda x: abs(x - term_months))
+        annual_rate = BANK_RATES[selected_bank][closest_term]
+        st.info(f"💡 Đã tự động áp dụng lãi suất **{annual_rate}%/năm** cho kỳ hạn {term_months} tháng từ **{selected_bank.split(' ')[1]}**")
+
     calc_method = st.selectbox("Phương pháp tính lãi:", ["Lãi Đơn (Simple Interest)", "Lãi Kép (Compound Interest)"])
     payout_freq = st.selectbox("Hình thức lãnh lãi:", [
         "Lãnh lãi cuối kỳ", 
@@ -177,7 +195,7 @@ if submitted:
         """, unsafe_allow_html=True)
 
     # --- BIỂU ĐỒ TĂNG TRƯỞNG ---
-    st.markdown("### 📈 Biểu đồ tăng trưởng tài sản âm phủ qua các tháng")
+    st.markdown("### 📈 Biểu đồ tăng trưởng tài sản qua các tháng")
     chart_data = []
     
     for m in range(1, total_months + 1):
@@ -214,7 +232,7 @@ if submitted:
             st.info(f"📜 Kết quả xăm: {random.choice(fortunes)}")
 
     with tab2:
-       
+        st.markdown("#### Gói Bảo Hiểm 'Không Mất Gốc Khi Qua Cầu'"):
         ins_package = st.selectbox("Chọn cấp độ bảo hiểm:", [
             "Gói Thường (Bảo hiểm 50% tài sản khi gặp Diêm Vương xét duyệt sớm)",
             "Gói VIP (Bảo hiểm 100% gốc + tặng kèm 1 căn nhà giấy cao cấp âm phủ)",
@@ -232,4 +250,4 @@ if submitted:
         """)
 
 else:
-    st.info("👈 Vui lòng nhập thông tin khoản tiết kiệm ở cột bên trái và bấm nút **'Tính toán tài chính âm phủ'** để hệ thống tự động xuất toàn bộ thông tin chi tiết.")
+    st.info("👈 Vui lòng chọn ngân hàng tích hợp, nhập thông tin khoản tiết kiệm ở cột bên trái và bấm nút **'Tính toán tài chính âm phủ'** để xem kết quả.")
