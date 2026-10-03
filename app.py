@@ -83,7 +83,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Tiêu đề ứng dụng
-st.title("🔥 NGÂN HÀNG ĐỊA PHỦ - HỆ THỐNG GỬI TIẾT KIỆM ÂM PHỦ 🔥")
+st.title("🔥 Ngân Hàng Anh Pha 🔥")
 st.markdown("*(Cam kết sinh lời cực đại, rút gốc ở trần gian, nhận lãi ở... âm phủ!)*")
 
 # Sidebar nhập liệu thông tin
